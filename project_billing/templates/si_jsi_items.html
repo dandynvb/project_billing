@@ -1,0 +1,183 @@
+<!-- 04 | Tabel Item + Total, Pajak, dan Pembayaran -->
+{% set p = sales_invoice_context(doc) %}
+{% set src = p.source %}
+{% macro money(v) %}{{ frappe.utils.fmt_money(v, currency=doc.currency) }}{% endmacro %}
+<table class="table table-bordered">
+<thead>
+<tr>
+<th style="width:5%">
+No
+</th>
+<th>
+Nama Item
+</th>
+<th style="width:12%">
+Qty
+</th>
+<th style="width:22%">
+Harga Satuan
+</th>
+<th style="width:22%">
+Total Harga
+</th>
+</tr>
+</thead>
+<tbody>
+{% if p.kind in ["DP", "Progress"] %}
+<tr>
+<td class="center">
+1
+</td>
+<td>
+Pembayaran {{ p.kind | e }} {{ "%g" | format(p.portion) }}%{% if p.kind == "Progress" and doc.custom_pb_term_label not in ["Progress", "PROGRESS", "progress"] %}<br><small>{{ doc.custom_pb_term_label | e }}</small>{% endif %}
+</td>
+<td class="center">
+1 Termin
+</td>
+<td class="amount">
+{{ money(doc.net_total) }}
+</td>
+<td class="amount">
+{{ money(doc.net_total) }}
+</td>
+</tr>
+{% else %}
+{% for item in p.rows %}
+<tr>
+<td class="center">
+{{ loop.index }}
+</td>
+<td>
+{{ item.item_name | e }}
+</td>
+<td class="center">
+{{ "%g" | format(item.qty) }} {{ item.uom | e }}
+</td>
+<td class="amount">
+{{ money(item.rate) }}
+</td>
+<td class="amount">
+{{ money(item.amount) }}
+</td>
+</tr>
+{% endfor %}
+{% endif %}
+</tbody>
+<!-- RINGKASAN: edit label dan baris total di bagian ini. -->
+<tfoot class="jsi-summary">
+<tr>
+<td colspan="4">
+<b>{{ "Total Kontrak" if p.kind == "Pelunasan" else "Total" }}</b>
+</td>
+<td class="amount">
+{{ money(src.net_total if p.kind in ["DP", "Progress"] else src.total) }}
+</td>
+</tr>
+{% if p.kind not in ["DP", "Progress"] and src.total != src.net_total %}
+<tr>
+<td colspan="4">
+Penyesuaian ke nilai sebelum pajak (diskon / pajak termasuk harga)
+</td>
+<td class="amount">
+{{ money(src.net_total - src.total) }}
+</td>
+</tr>
+{% endif %}
+{% for tax in src.taxes %}
+<tr>
+<td colspan="4">
+<b>{% if 'ppn' in (tax.account_head or '').lower() or 'vat' in (tax.account_head or '').lower() %}PPN{% if tax.charge_type == "On Net Total" %} {{ "%g" | format(tax.rate) }}%{% endif %}{% else %}{{ (tax.description or tax.account_head) | striptags | e }}{% endif %}{{ " Kontrak" if p.kind == "Pelunasan" else "" }}</b>
+</td>
+<td class="amount">
+{{ money(tax.tax_amount_after_discount_amount if tax.tax_amount_after_discount_amount is not none else tax.tax_amount) }}
+</td>
+</tr>
+{% else %}
+<tr>
+<td colspan="4">
+<b>{{ "Pajak Kontrak" if p.kind == "Pelunasan" else "Pajak" }}</b>
+</td>
+<td class="amount">
+{{ money(0) }}
+</td>
+</tr>
+{% endfor %}
+<tr>
+<td colspan="4">
+<b>{{ "Grand Total Kontrak" if p.kind == "Pelunasan" else "Grand Total" }}</b>
+</td>
+<td class="amount">
+<b>{{ money(src.grand_total) }}</b>
+</td>
+</tr>
+{% if not p.order and not doc.disable_rounded_total and doc.rounded_total and doc.rounded_total != doc.grand_total %}
+<tr>
+<td colspan="4">
+Total Setelah Pembulatan
+</td>
+<td class="amount">
+{{ money(doc.rounded_total) }}
+</td>
+</tr>
+{% endif %}
+{% if p.order %}
+{% if p.kind == "Pelunasan" %}
+<tr>
+<td colspan="4">
+Total pembayaran kontrak yang sudah diterima
+</td>
+<td class="amount">
+{{ money(p.received) }}
+</td>
+</tr>
+{% if p.contract_remaining != p.due %}
+<tr>
+<td colspan="4">
+Sisa nilai kontrak setelah penerimaan pembayaran
+</td>
+<td class="amount">
+{{ money(p.contract_remaining) }}
+</td>
+</tr>
+{% endif %}
+<tr>
+<td colspan="4">
+Nilai invoice pelunasan ini (termasuk pajak)
+</td>
+<td class="amount">
+{{ money(p.invoice_total) }}
+</td>
+</tr>
+{% else %}
+{% if p.kind == "Progress" %}
+<tr>
+<td colspan="4">
+Pembayaran kontrak selain invoice ini (informasi)
+</td>
+<td class="amount">
+{{ money(p.received_elsewhere) }}
+</td>
+</tr>
+{% endif %}
+{% endif %}
+{% if p.current_received %}
+<tr>
+<td colspan="4">
+Pembayaran diterima untuk invoice ini
+</td>
+<td class="amount">
+{{ money(p.current_received) }}
+</td>
+</tr>
+{% endif %}
+{% endif %}
+<tr class="jsi-due">
+<td colspan="4">
+Jumlah yang harus dibayarkan — invoice ini
+</td>
+<td class="amount">
+{{ money(p.due) }}
+</td>
+</tr>
+</tfoot>
+</table>

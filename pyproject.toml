@@ -1,0 +1,29 @@
+[build-system]
+requires = ["flit_core>=3.9,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "project_billing"
+authors = [{name = "Project Billing Contributors"}]
+description = "Project installment billing for ERPNext v15"
+readme = "README.md"
+requires-python = ">=3.10"
+dynamic = ["version"]
+dependencies = []
+license = {text = "MIT"}
+
+[tool.bench.frappe-dependencies]
+frappe = ">=15.0.0,<16.0.0"
+erpnext = ">=15.0.0,<16.0.0"
+
+[tool.flit.sdist]
+include = ["tests/", "docs/*.md", "ACCEPTANCE.md", "DEPLOYMENT.md"]
+exclude = ["**/__pycache__/**", "**/*.pyc", "**/.DS_Store", "dist/", "test-results/", "docs/images/", "docs/*.pdf", "docs/*.html", "docs/build_visual_guide.py", "HANDOFF.md", ".env", ".env.*", "site_config.json", "common_site_config.json", "private-archives/", "local-artifacts/"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+ignore = ["E501"]

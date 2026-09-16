@@ -1,0 +1,57 @@
+<!-- 02 | Alamat Bill To dan Ship To: alamat dipisahkan koma seperti PO JSI -->
+{% macro compact_address(name, fallback, contact_phone="", contact_email="") %}
+    {% if name and frappe.db.exists("Address", name) %}
+        {% set address = frappe.get_doc("Address", name) %}
+        {% set parts = [] %}
+        {% for field in ["address_line1", "address_line2", "city", "state", "pincode", "country"] %}
+            {% if address.get(field) and address.get(field) | trim %}{% set _ = parts.append(address.get(field) | trim) %}{% endif %}
+        {% endfor %}
+        {{ parts | join(', ') | e }}
+        {% if address.phone or contact_phone %}<br>Phone: {{ (address.phone or contact_phone) | e }}{% endif %}
+        {% if address.email_id or contact_email %}<br>Email: {{ (address.email_id or contact_email) | e }}{% endif %}
+    {% else %}
+        {{ (fallback or "") | replace("<br>", ", ") | replace("<br/>", ", ") | replace("<br />", ", ") | replace("<BR>", ", ") | striptags | e }}
+        {% if not fallback %}
+            {% if contact_phone %}<br>Phone: {{ contact_phone | e }}{% endif %}
+            {% if contact_email %}<br>Email: {{ contact_email | e }}{% endif %}
+        {% endif %}
+    {% endif %}
+{% endmacro %}
+<table style="width:100%;border-collapse:collapse;border:none;font-family:inherit;">
+<tr>
+<th style="width:48%;background-color:#5a9cab;color:#fff;border:1px solid #000;padding:4px 10px;font-weight:bold;text-align:left;">
+Bill To
+</th>
+<th style="width:4%;border:none;background:transparent;">
+</th>
+<th style="width:48%;background-color:#5a9cab;color:#fff;border:1px solid #000;padding:4px 10px;font-weight:bold;text-align:left;">
+Ship To
+</th>
+</tr>
+<tr>
+<td style="width:48%;border:none;padding:8px 2px 0 2px;vertical-align:top;color:#333;">
+<div style="font-weight:bold;text-transform:uppercase;">
+{{ (doc.customer_name or doc.customer) | e }}
+</div>
+<div>
+{{ (doc.tax_id or "") | e }}
+</div>
+<div style="margin-top:15px;line-height:1.5;">
+{{ compact_address(doc.customer_address, doc.address_display, doc.contact_mobile, doc.contact_email) }}
+</div>
+</td>
+<td style="width:4%;border:none;">
+</td>
+<td style="width:48%;border:none;padding:8px 2px 0 2px;vertical-align:top;color:#333;">
+<div style="font-weight:bold;text-transform:uppercase;">
+{{ (doc.customer_name or doc.customer) | e }}
+</div>
+<div>
+{{ (doc.tax_id or "") | e }}
+</div>
+<div style="margin-top:15px;line-height:1.5;">
+{{ compact_address(doc.shipping_address_name or doc.customer_address, doc.shipping_address or doc.address_display) }}
+</div>
+</td>
+</tr>
+</table>

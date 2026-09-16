@@ -1,0 +1,64 @@
+{
+  "doctype": "DocType",
+  "name": "Project Billing Term",
+  "module": "Project Billing",
+  "custom": 0,
+  "engine": "InnoDB",
+  "istable": 1,
+  "issingle": 0,
+  "track_changes": 0,
+  "field_order": [
+    "term_code",
+    "label",
+    "term_type",
+    "invoice_portion",
+    "credit_days",
+    "required_before_delivery"
+  ],
+  "fields": [
+    {
+      "fieldname": "term_code",
+      "label": "Term Code",
+      "fieldtype": "Data",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "label",
+      "label": "Description",
+      "fieldtype": "Data",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "term_type",
+      "label": "Jenis Termin",
+      "fieldtype": "Select",
+      "options": "Auto\nDP\nProgress\nPelunasan",
+      "default": "Auto",
+      "in_list_view": 1,
+      "description": "Auto: termin pertama DP, tengah Progress, terakhir Pelunasan; satu termin berarti Pelunasan."
+    },
+    {
+      "fieldname": "invoice_portion",
+      "label": "Invoice Portion (%)",
+      "fieldtype": "Percent",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "credit_days",
+      "label": "Days After Invoice Date",
+      "fieldtype": "Int",
+      "default": "0",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "required_before_delivery",
+      "label": "Payment Required Before Delivery",
+      "fieldtype": "Check",
+      "default": "0"
+    }
+  ],
+  "permissions": []
+}

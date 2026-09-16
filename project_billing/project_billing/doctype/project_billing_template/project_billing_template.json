@@ -1,0 +1,86 @@
+{
+  "doctype": "DocType",
+  "name": "Project Billing Template",
+  "module": "Project Billing",
+  "custom": 0,
+  "engine": "InnoDB",
+  "istable": 0,
+  "issingle": 0,
+  "track_changes": 1,
+  "field_order": [
+    "template_name",
+    "disabled",
+    "terms"
+  ],
+  "fields": [
+    {
+      "fieldname": "template_name",
+      "label": "Template Name",
+      "fieldtype": "Data",
+      "reqd": 1,
+      "unique": 1
+    },
+    {
+      "fieldname": "disabled",
+      "label": "Disabled",
+      "fieldtype": "Check",
+      "default": "0"
+    },
+    {
+      "fieldname": "terms",
+      "label": "Installments",
+      "fieldtype": "Table",
+      "options": "Project Billing Term",
+      "reqd": 1
+    }
+  ],
+  "permissions": [
+    {
+      "role": "Sales User",
+      "read": 1,
+      "write": 0,
+      "create": 0,
+      "delete": 0,
+      "report": 1,
+      "export": 1
+    },
+    {
+      "role": "Sales Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 0,
+      "report": 1,
+      "export": 1
+    },
+    {
+      "role": "Accounts User",
+      "read": 1,
+      "write": 0,
+      "create": 0,
+      "delete": 0,
+      "report": 1,
+      "export": 1
+    },
+    {
+      "role": "Accounts Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 0,
+      "report": 1,
+      "export": 1
+    },
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1,
+      "report": 1,
+      "export": 1
+    }
+  ],
+  "autoname": "field:template_name",
+  "title_field": "template_name"
+}

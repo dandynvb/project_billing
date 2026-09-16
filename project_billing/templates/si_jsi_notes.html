@@ -1,0 +1,17 @@
+<!-- 06 | Catatan Pembayaran -->
+{% set p = sales_invoice_context(doc) %}
+{% if p.kind == "Progress" %}
+<p class="jsi-note">
+Pembayaran termin lain tidak mengurangi tagihan invoice ini.
+</p>
+{% endif %}
+{% if p.kind == "Pelunasan" and p.contract_remaining != p.due %}
+<p class="jsi-note">
+Sisa kontrak mencakup saldo di luar invoice ini. Nominal merah hanya tagihan invoice ini.
+</p>
+{% endif %}
+{% if doc.docstatus == 2 %}
+<p class="jsi-note">
+CANCELLED — dokumen ini telah dibatalkan.
+</p>
+{% endif %}

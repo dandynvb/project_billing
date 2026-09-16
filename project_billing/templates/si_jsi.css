@@ -1,0 +1,196 @@
+.print-format {
+    font-size: 12px;
+    background: white;
+}
+
+.print-heading {
+    border-bottom: 1px solid #f4f5f6;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+.print-heading h2 {
+    font-size: 24px;
+}
+
+.print-heading h2 div {
+    font-weight: 600;
+}
+
+.print-heading small {
+    font-size: 13px !important;
+    font-weight: normal;
+    line-height: 2.5;
+    color: #4c5a67;
+}
+
+.print-format .letter-head {
+    margin-bottom: 30px;
+}
+
+.print-format label {
+    font-weight: normal;
+    font-size: 13px;
+    color: #4C5A67;
+    margin-bottom: 0;
+}
+
+.print-format .data-field {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.print-format .value {
+    color: #192734;
+    line-height: 1.8;
+}
+
+.print-format .section-break:not(:last-child) {
+    margin-bottom: 0;
+}
+
+.print-format .row:not(.section-break) {
+    line-height: 1.6;
+    margin-top: 15px !important;
+}
+
+.print-format .important .value {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.print-format th {
+    color: #FFFFFF;
+    font-weight: bold;
+    border-bottom-width: 1px !important;
+    background: #5a9cab;
+    text-align: center;
+}
+
+.print-format .table-bordered td, .print-format .table-bordered th {
+    border: 1px solid #000000;
+}
+
+.print-format .table-bordered {
+    border: 1px solid #000000;
+}
+
+.print-format td, .print-format th {
+    padding: 4px 10px !important;
+}
+
+.print-format .primary.compact-item {
+    font-weight: normal;
+}
+
+.print-format table td .value {
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+.page-number {
+    display: none !important;
+}
+
+.surat {
+    text-indent: 1.5cm;
+    text-align: justify;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+.quote-header {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.table-bordered td.center {
+    text-align: center;
+}
+
+.table-bordered td.amount {
+    text-align: right;
+}
+
+.signature-section{
+    margin-top:40px;
+    width:260px;
+    line-height:1.4;
+}
+
+.signature-section p{
+    margin:0;
+}
+
+.signature-image{
+    height:90px;
+    margin:8px 0;
+}
+
+.signature-image img{
+    max-height:90px;
+    max-width:180px;
+    object-fit:contain;
+}
+
+.bank-table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+    margin-bottom:15px;
+}
+
+.bank-table td{
+    width:10%;
+    vertical-align:top;
+}
+
+.bank-info{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.bank-logo{
+    width:70px;
+}
+
+.bank-logo img{
+    width:60px;
+}
+
+.bank-name{
+    font-size:13px;
+    font-weight:bold;
+    color:#222;
+}
+
+.bank-number{
+    font-weight:bold;
+    margin-bottom:2px;
+}
+
+.company-bank{
+    font-weight:bold;
+}
+
+.npwp-box{
+    margin-top:15px;
+}
+
+.npwp-box img{
+    width:300px;
+}
+
+/* LIST */
+.print-format .table-container-order ul {
+  padding-left: 15px !important;
+}
+
+/* Invoice-only additions; base style copied from PO JSI / Redesign 2. */
+.print-format .jsi-due td { color: #c62828 !important; font-weight: bold; }
+.print-format .jsi-note { font-size: 10px; color: #666; }
+.print-format .jsi-summary, .print-format .signature-section { page-break-inside: avoid; }
+
+/* Keep totals at the end once, not repeated as a footer on each PDF page. */
+.print-format tfoot.jsi-summary { display: table-row-group; page-break-inside: avoid; }

@@ -1,0 +1,34 @@
+<style>
+.pb-title { font-size: 24px; margin-bottom: 12px; }
+.pb-table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.pb-table th, .pb-table td { padding: 7px; border-bottom: 1px solid #ddd; }
+.pb-number { text-align: right; }
+.pb-note { color: #555; font-size: 11px; }
+</style>
+{% if doc.custom_pb_sales_order %}
+<div class="pb-title">{{ "PROFORMA INVOICE" if doc.docstatus == 0 else ("CANCELLED INVOICE" if doc.docstatus == 2 else "INVOICE") }}</div>
+<p><strong>{{ doc.company | e }}</strong><br>{{ doc.name | e }}</p>
+<p>Customer: {{ doc.customer_name | e }}<br>
+Sales Order: {{ doc.custom_pb_sales_order | e }}<br>
+Installment: {{ doc.custom_pb_term_label | e }} ({{ doc.custom_pb_portion }}%)<br>
+Date: {{ doc.get_formatted("posting_date") }} · Due: {{ doc.get_formatted("due_date") }}</p>
+<h4>Original Contract Items</h4>
+<table class="pb-table">
+    <thead><tr><th>Item</th><th class="pb-number">Qty</th><th>UOM</th><th class="pb-number">Contract Rate</th><th class="pb-number">Contract Amount</th></tr></thead>
+    <tbody>{% for row in doc.custom_pb_contract_items %}
+    <tr><td>{{ row.item_code | e }} — {{ row.item_name | e }}</td><td class="pb-number">{{ row.qty }}</td><td>{{ row.uom | e }}</td><td class="pb-number">{{ row.get_formatted("rate", doc) }}</td><td class="pb-number">{{ row.get_formatted("amount", doc) }}</td></tr>
+    {% endfor %}</tbody>
+</table>
+<p class="pb-note">Contract reference only. This invoice bills the installment below; it does not deliver these goods.</p>
+<p>Contract total including tax: {{ doc.get_formatted("custom_pb_contract_total") }}</p>
+<table class="pb-table">
+<tr><th>Installment charges</th><th class="pb-number">Amount</th></tr>
+{% for row in doc.items %}<tr><td>{{ row.description | striptags | e }}</td><td class="pb-number">{{ row.get_formatted("net_amount", doc) }}</td></tr>{% endfor %}
+{% for row in doc.taxes %}<tr><td>{{ row.description | striptags | e }}</td><td class="pb-number">{{ row.get_formatted("tax_amount", doc) }}</td></tr>{% endfor %}
+<tr><th>Total installment including tax</th><th class="pb-number">{{ doc.get_formatted("grand_total") }}</th></tr>
+{% if doc.docstatus == 1 %}<tr><td>Outstanding invoice</td><td class="pb-number">{{ doc.get_formatted("outstanding_amount") }}</td></tr>{% endif %}
+</table>
+{% if doc.docstatus == 0 %}<p class="pb-note">Proforma / draft. No accounting entry has been posted. Submit this Sales Invoice to issue the accounting invoice.</p>{% endif %}
+{% else %}
+<p>This print format is intended for Project Billing installment invoices.</p>
+{% endif %}

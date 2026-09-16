@@ -1,0 +1,45 @@
+__pycache__/
+*.py[cod]
+.venv/
+dist/
+*.egg-info/
+.coverage
+.ruff_cache/
+.pytest_cache/
+.DS_Store
+.env
+.env.*
+erpnext.md
+*credentials*
+*private_key*
+
+# Generated local evidence is not part of distributable app source.
+test-results/
+
+# Local documents and rendered evidence can contain customer/site data.
+private-archives/
+local-artifacts/
+HANDOFF.md
+docs/images/
+docs/build_visual_guide.py
+docs/*.pdf
+docs/*.html
+
+# Deployment secrets, database dumps, and private keys never belong in source.
+site_config.json
+common_site_config.json
+sites/
+backups/
+*.sql
+*.sql.gz
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+*.log
+build/
+venv/
+.idea/
+.vscode/

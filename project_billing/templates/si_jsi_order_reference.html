@@ -1,0 +1,12 @@
+<!-- 03 | Referensi SO dan Termin -->
+{% set p = sales_invoice_context(doc) %}
+{% if p.order and doc.po_no %}
+<p style="margin:15px 0 8px;">
+Customer PO: {{ doc.po_no | e }}
+</p>
+{% endif %}
+{% if p.kind == "Pelunasan" %}
+<p class="jsi-note">
+Rincian barang dan nilai kontrak Sales Order.
+</p>
+{% endif %}

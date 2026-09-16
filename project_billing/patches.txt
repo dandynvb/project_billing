@@ -1,0 +1,1 @@
+# Schema and custom fields are installed idempotently by after_migrate.

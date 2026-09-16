@@ -1,0 +1,44 @@
+{
+  "doctype": "DocType",
+  "name": "Project Billing Settings",
+  "module": "Project Billing",
+  "custom": 0,
+  "engine": "InnoDB",
+  "istable": 0,
+  "issingle": 1,
+  "track_changes": 1,
+  "field_order": [
+    "enabled",
+    "billing_item",
+    "enforce_delivery_payment"
+  ],
+  "fields": [
+    {
+      "fieldname": "enabled",
+      "label": "Enable Project Billing",
+      "fieldtype": "Check",
+      "default": "0"
+    },
+    {
+      "fieldname": "billing_item",
+      "label": "Installment Billing Item",
+      "fieldtype": "Link",
+      "options": "Item",
+      "description": "Select a non-stock sales item with no item tax templates or deferred revenue. Original goods remain on the Sales Order and Delivery Note."
+    },
+    {
+      "fieldname": "enforce_delivery_payment",
+      "label": "Enforce Payment Before Delivery",
+      "fieldtype": "Check",
+      "default": "1",
+      "description": "Applies only to installments marked Payment Required Before Delivery."
+    }
+  ],
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1
+    }
+  ]
+}
